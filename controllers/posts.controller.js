@@ -65,14 +65,21 @@ export const deletePost = async (req, res) => {
 };
 
 export const get_comments_by_post = async (req, res) => {
-  const { post_id } = req.body;
+  const { post_id } = req.query;
+  console.log(`Post_id`, post_id);
 
   try {
     const post = await Post.findOne({ _id: post_id });
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
-    return res.json({ comments: post.comments });
+
+    const comments = await Comment.find({ postId: post_id }).populate(
+      "userId",
+      "username name"
+    );
+
+    return res.json(comments.reverse());
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

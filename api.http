@@ -65,8 +65,9 @@ POST http://localhost:9090/update_profile_data
 Content-Type: application/json
 
 {
+    # Change the token
     "token":"308955e87f564ce94e3dcde164e3377ac27a9f96f82d54aa686eebe7d86f863e",
-    "bio":"Full Stack Developer",
+    "bio":"Hey I am Neha, I am frome Delhi, I work in Amazon",
     "currentPost": "CTO",
     "pastWork": [
         {

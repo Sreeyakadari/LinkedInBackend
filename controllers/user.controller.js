@@ -78,7 +78,7 @@ export const login = async (req, res) => {
     const token = crypto.randomBytes(32).toString("hex");
     await User.updateOne({ _id: user.id }, { token });
 
-    return res.json({ token:token });
+    return res.json({ token: token });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -173,6 +173,8 @@ export const getAllUserProfile = async (req, res) => {
 
 export const downloadProfile = async (req, res) => {
   const user_id = req.query.id;
+  console.log(user_id);
+  // return res.json({"message":"Not Implemented"})
   const userProfile = await Profile.findOne({ userId: user_id }).populate(
     "userId",
     "name username email profilePicture"
@@ -230,7 +232,7 @@ export const getMyConnectionsRequests = async (req, res) => {
 };
 
 export const whatAreMyConnections = async (req, res) => {
-  const { token } = req.body;
+  const { token } = req.query;
   try {
     const user = await User.findOne({ token });
     if (!user) {
@@ -283,11 +285,32 @@ export const commentPost = async (req, res) => {
     const comment = new Comment({
       userId: user._id,
       postId: post_id,
-      comment: commentBody,
+      body: commentBody,
     });
 
     await comment.save();
     return res.staus(200).json({ message: "Comment added" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getUserProfileAndUserBasedOnUsername = async (req, res) => {
+  const { username } = req.query;
+
+  try {
+    const user = await User.findOne({
+      username,
+    });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const userProfile = await Profile.findOne({ userId: user._id }).populate(
+      "userId",
+      "name username email profilePicture"
+    );
+
+    return res.json({ profile: userProfile });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
