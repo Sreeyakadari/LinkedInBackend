@@ -13,8 +13,11 @@ import {
   whatAreMyConnections,
   acceptConnectionRequest,
   getUserProfileAndUserBasedOnUsername,
+  downloadProfileFile, // <-- added
 } from "../controllers/user.controller.js";
+
 import multer from "multer";
+import path from "path";
 
 const router = Router();
 
@@ -28,6 +31,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
 router
   .route("/update_profile_picture")
   .post(upload.single("profile_picture"), uploadProfilePicture);
@@ -46,5 +50,18 @@ router.route("/user/accept_connection_request").post(acceptConnectionRequest);
 router
   .route("/user/get_profile_based_on_username")
   .get(getUserProfileAndUserBasedOnUsername);
+
+router.get("/get_user_profile/:userId", (req, res) => {
+  req.query.userId = req.params.userId;
+  return getUserAndProfile(req, res);
+});
+
+router.get("/api/user/profile/:userId", (req, res) => {
+  req.query.userId = req.params.userId;
+  return getUserAndProfile(req, res);
+});
+
+// 📂 New route to serve the PDF file from uploads
+router.get("/user/download_resume_file/:filename", downloadProfileFile);
 
 export default router;
