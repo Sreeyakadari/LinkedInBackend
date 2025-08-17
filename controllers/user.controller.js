@@ -56,6 +56,14 @@ export const register = async (req, res) => {
 // ---------- Login ----------
 export const login = async (req, res) => {
   try {
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // true in prod to require HTTPS
+      sameSite: "none", // allows cross-site cookies when frontend and backend are on different domains
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days, adjust as needed
+    });
+
     const { email, username, password } = req.body;
     if ((!email && !username) || !password)
       return res
