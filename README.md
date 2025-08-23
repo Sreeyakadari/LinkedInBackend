@@ -19,7 +19,7 @@ This project implements a **LinkedIn Clone** with a frontend built using **React
 
 ### **Description:**
 
-This is the backend of the LinkedIn Clone application, powered by **Node.js** and **Express.js**. It handles user authentication, profile management, connection requests, messaging, and job postings. The backend communicates with a MongoDB database to store user and connection data.
+LinkedIn Clone backend is build using **Node.js** and **Express.js**. It handles user authentication, profile management, connection requests, messaging, and job postings. The backend communicates with a MongoDB database to store user and connection data.
 
 ### **Features:**
 
